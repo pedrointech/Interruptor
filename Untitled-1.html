@@ -1,74 +1,187 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lâmpada Interativa</title>
     <style>
+        *{
+            user-select: none;
+        }
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f5f5f5;
-            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Arial', sans-serif;
+            transition: background 0.5s;
         }
-        .container {
+
+        #container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             text-align: center;
+            width: 90%;
+            max-width: 250px;
+
         }
-        .lamp {
-            width: 150px;
+
+        h1 {
+            color: #2d3748;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        #lamp {
+            width: 200px;
             height: 300px;
-            background: url('lamp-off.png') no-repeat center/contain;
+            background-size: contain;
+            background-repeat: no-repeat;
+            transition: transform 0.3s ease;
+            cursor: pointer;
             margin: 0 auto;
         }
-        .switch {
-            margin-top: 20px;
-            width: 100px;
-            height: 30px;
-            background-color: #ccc;
-            border-radius: 15px;
-            position: relative;
-            cursor: pointer;
+
+        #lamp:hover:not(.explodido) {
+            transform: scale(1.05);
         }
-        .switch div {
-            width: 30px;
-            height: 30px;
-            background-color: #333;
-            border-radius: 50%;
-            position: absolute;
-            top: 0;
-            left: 35px;
-            transition: background-color 0.3s, transform 0.3s;
+
+        #interruptor {
+            width: 100px;
+            height: 150px;
+            margin: 20px auto 0;
+            background-size: contain;
+            background-repeat: no-repeat;
+            cursor: pointer;
+            transition: transform 0.5s ease;
+        }
+
+        #interruptor:hover {
+            transform: scale(1.1);
+        }
+
+        /* Classes da Lâmpada */
+        .ligado {
+            background-image: url('lampadaligada.png');
+            filter: drop-shadow(0 0 20px #ffeb3b);
+        }
+
+        .desligado {
+            background-image: url('lampadadesligada.png');
+        }
+
+        .explodido {
+            background-image: url('lampadaquebrada.png');
+            filter: none !important;
+            cursor: not-allowed;
+        }
+
+        /* Classes do Interruptor */
+        .interruptor-ligado {
+            background-image: url('ligado.png');
+        }
+
+        .interruptor-desligado {
+            background-image: url('desligado.png');
+        }
+
+        .creditos {
+            position: fixed;
+            bottom: 20px;
+            color: white;
+            font-size: 12px;
+        }
+        #reiniciar{
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #667eea;
+            color: white;
+
+        }
+        #reiniciar:hover {
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="lamp" id="lamp"></div>
-        <div class="switch" 
-             onmouseover="turnOn()" 
-             onmouseout="turnOff()" 
-             onclick="explode()">
-            <div></div>
-        </div>
+    <div id="container">
+        <h1>Lâmpada</h1>
+        <div id="lamp" class="desligado"></div>
+        <div id="interruptor" class="interruptor-desligado"></div>
+        <button id="reiniciar">Reiniciar</button>
     </div>
+    <div class="creditos">Clique na lâmpada para quebrar!</div>
 
     <script>
         const lamp = document.getElementById('lamp');
+        const interruptor = document.getElementById('interruptor');
+        
+        // Sons configurados corretamente (sem loop)
+        const clickSound = new Audio('interruptor.mp3');
+        clickSound.loop = false; // 🔄 Garante que não vai repetir
+        
+        const breakSound = new Audio('quebrando.mp3');
+        breakSound.loop = false; // 🔄 Garante que não vai repetir
+    
+        
+        // Lógica do Interruptor
+        interruptor.addEventListener('click', () => {
+            if (!lamp.classList.contains('explodido')) {
+                clickSound.currentTime = 0; // ⏮️ Reinicia o áudio
+                clickSound.play(); // ▶️ Toca uma única vez
+                
+                // (o resto da lógica permanece igual)
+                if (lamp.classList.contains('desligado')) {
+                    lamp.classList.replace('desligado', 'ligado');
+                    interruptor.classList.replace('interruptor-desligado', 'interruptor-ligado');
+                } else {
+                    lamp.classList.replace('ligado', 'desligado');
+                    interruptor.classList.replace('interruptor-ligado', 'interruptor-desligado');
+                }
+            }
+        });
+    
+        // Lógica de Explosão
+        lamp.addEventListener('click', () => {
+            if (!lamp.classList.contains('explodido')) {
+                breakSound.currentTime = 0; // ⏮️ Reinicia o áudio
+                breakSound.play(); // ▶️ Toca uma única vez
+                
+                // (o resto da lógica permanece igual)
+                lamp.classList.add('explodido');
+                lamp.classList.remove('ligado', 'desligado');
+                interruptor.classList.replace('interruptor-ligado', 'interruptor-desligado');
+                
+                // Efeito de tremor
+                lamp.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    lamp.style.animation = '';
+                }, 500);
+            }
+            const reiniciar = document.getElementById('reiniciar');
 
-        function turnOn() {
-            lamp.style.backgroundImage = "url('lamp-on.png')";
-        }
+// Lógica para reiniciar o estado da lâmpada e do interruptor
+reiniciar.addEventListener('click', () => {
+    lamp.classList.remove('explodido'); // Remove a classe de lâmpada quebrada
+    lamp.classList.add('desligado'); // Restaura o estado desligado
+    lamp.classList.remove('ligado'); // Remove qualquer estado ligado (se estiver)
 
-        function turnOff() {
-            lamp.style.backgroundImage = "url('lamp-off.png')";
-        }
+    interruptor.classList.remove('interruptor-ligado'); // Garante que o interruptor está desligado
+    interruptor.classList.add('interruptor-desligado'); // Restaura o estado desligado do interruptor
 
-        function explode() {
-            lamp.style.backgroundImage = "url('lamp-explode.png')";
-        }
+    // Opcional: Remove animações/reseta o estilo de tremor
+    lamp.style.animation = '';
+
+    console.log('Reiniciado com sucesso!'); // Apenas para debug
+});
+
+        });
     </script>
-</body>
-</html>

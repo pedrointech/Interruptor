@@ -1,0 +1,13 @@
+.trilho {
+    right: 10px;
+    width: 60px;
+    height: 30px;
+    background-color: #dbdbdb;
+    border-radius: 150px;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none; /* Para navegadores baseados em WebKit */
+    -moz-user-select: none; /* Para Firefox */
+    -ms-user-select: none; /* Para versões mais antigas do IE */
+}

@@ -158,3 +158,40 @@ h1 {
     background-color: rgba(255, 255, 255, 0.95);
 }
 
+/* Responsividade para Mobile */
+@media (max-width: 768px) {
+    #social-text,
+    #links,
+    #repositorio-text,
+    .repositorio {
+      position: relative;
+      left: auto;
+      right: auto;
+      top: auto;
+      transform: none;
+      margin: 20px auto;
+      width: 90%;
+    }
+  
+    #container {
+      margin-bottom: 20px;
+    }
+  
+    body {
+      flex-direction: column;
+      min-height: 100vh;
+      height: auto;
+      padding: 20px 0;
+    }
+  
+    .creditos {
+      position: relative;
+      bottom: auto;
+      margin-top: 30px;
+    }
+  
+    #links,
+    .repositorio {
+      justify-content: center;
+    }
+  }

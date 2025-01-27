@@ -59,27 +59,27 @@ h1 {
 
 /* Classes da Lâmpada */
 .ligado {
-    background-image: url('lampadaligada.png');
+    background-image: url('../assets/lampadaligada.png');
     filter: drop-shadow(0 0 20px #ffeb3b);
 }
 
 .desligado {
-    background-image: url('lampadadesligada.png');
+    background-image: url('../assets/lampadadesligada.png');
 }
 
 .explodido {
-    background-image: url('lampadaquebrada.png');
+    background-image: url('../assets/lampadaquebrada.png');
     filter: none !important;
     cursor: not-allowed;
 }
 
 /* Classes do Interruptor */
 .interruptor-ligado {
-    background-image: url('ligado.png');
+    background-image: url('../assets/ligado.png');
 }
 
 .interruptor-desligado {
-    background-image: url('desligado.png');
+    background-image: url('../assets/desligado.png');
 }
 
 .creditos {
@@ -102,3 +102,59 @@ h1 {
 #reiniciar:hover {
     transform: scale(1.05);
 }
+
+#social-text {
+    position: absolute;
+    left: 20%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    text-align: center;
+    color: white;
+}
+
+#links {
+    position: absolute;
+    left: 20%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    padding: 0px 2px;
+    transition: transform 0.3s;
+}
+
+.icon:hover {
+    transform: scale(1.1);
+}
+
+#repositorio-text {
+    position: absolute;
+    right: 20%;
+    top: 40%;
+    transform: translate(50%, -50%);
+    font-size: 18px;
+    text-align: center;
+    color: white;
+}
+
+.repositorio {
+    position: absolute;
+    right: 20%;
+    top: 50%;
+    transform: translate(50%, -50%);
+    display: flex;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
